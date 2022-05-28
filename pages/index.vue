@@ -22,12 +22,19 @@
     </section>
     <section class="reading-section">
       <h2>Список для чтения</h2>
-      <ul class="reading-list">
-        <li class="reading-card" v-for="card in readingList">
-          {{ card.title }}<span @if="card.category.length > 0"> в {{ card.category }}</span>
-        </li>
-      </ul>
-      <p @if="readingList.length === 0">Пусто</p>
+      <table v-if="readingList.length > 0" class="reading-list">
+        <tr>
+          <th>Книга</th>
+          <th>Категория</th>
+          <th>Приоритет</th>
+        </tr>
+        <tr class="reading-card" v-for="card in readingList">
+          <th>{{ card.title }}</th>
+          <th>{{ card.category }}</th>
+          <th>{{ card.priority }}</th>
+        </tr>
+      </table>
+      <p v-else>Пусто</p>
       <form @submit="e => addBook(e)" class="add-form">
         <h3>Добавить книгу</h3>
         <input type="text" placeholder="Название книги" v-model="newBook.title" required>
@@ -166,6 +173,15 @@
 
 .reading-section {
   text-align: center;
+}
+
+.reading-list {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.reading-card {
+  background-color: main.$yellow;
 }
 </style>
 
