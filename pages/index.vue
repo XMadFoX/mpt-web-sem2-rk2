@@ -1,23 +1,25 @@
 <template>
-  <div>
-    <h1>Подборка книг для начинающего WEB-программиста</h1>
-    <ul>
-      <li v-for="category in categories">
-        <h2>{{ category.title }}</h2>
-        <ul class="book-list">
-          <li class="book-card" v-for="book in category.books">
-            <img class="book-card__cover" :src="book.cover" :alt="book.title">
-            <div class="book-card__info">
-              <h2 class="book-card__title">
-                {{ book.title }}
-              </h2>
-              <p>{{ book.description }}</p>
-              <p class="book-card__author">{{ book.author }}</p>
-            </div>
-          </li>
-        </ul>
-      </li>
-    </ul>
+  <div class="container">
+    <section class="books">
+      <h1 class="books__title">Подборка книг для начинающего WEB-программиста</h1>
+      <ul class="category-list">
+        <li v-for="category in categories">
+          <h2 class="category__title">{{ category.title }}</h2>
+          <ul class="book-list">
+            <li class="book-card" v-for="book in category.books">
+              <img class="book-card__cover" :src="book.cover" :alt="book.title">
+              <div class="book-card__info">
+                <h2 class="book-card__title">
+                  {{ book.title }}
+                </h2>
+                <p>{{ book.description }}</p>
+                <p class="book-card__author">{{ book.author }}</p>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
     <section class="reading-section">
       <h2>Список для чтения</h2>
       <ul class="reading-list">
@@ -37,7 +39,7 @@
             </option>
           </select>
           <input type="number" min="1" max="5" v-model="newBook.priority">
-          <button type="submit">Добавить</button>
+          <button class="add-form__button" type="submit">Добавить</button>
         </div>
       </form>
     </section>
@@ -50,6 +52,24 @@
 .container {
   max-width: 1280px;
   margin: 0 auto;
+}
+
+.category-list {
+  padding: 0;
+}
+
+.category__title {
+  text-align: center;
+}
+
+.books__title {
+  text-align: center;
+  margin-top: 2rem;
+
+  @media (min-width: 768px) {
+    margin-top: 4rem;
+    font-size: 2.5rem;
+  }
 }
 
 .book-list {
@@ -72,7 +92,15 @@
   border-radius: 0.25rem;
   padding: 1rem;
   display: flex;
+  flex-direction: column;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    // align-items: center;
+    gap: 1rem;
+  }
+
   // flex-direction: row-reverse;
 }
 
@@ -94,26 +122,46 @@
 
 .book-card__author {
   margin-top: auto;
+  font-style: italic;
   font-size: 0.75rem;
-  color: #666;
+  color: main.$primary;
 }
 
 .add-form {
+  background-color: main.$secondary;
+  border-radius: 0.25rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   max-width: 600px;
   margin: 2rem auto;
   appearance: none;
+  padding: 1rem;
 
-  &>*:nth-child(2) {
+  &>*:nth-child(3) {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
 
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+
+
     &>* {
-      width: 50%;
+      @media (min-width: 768px) {
+        width: 50%;
+      }
     }
   }
+}
+
+.add-form__button {
+  background-color: main.$yellow;
+  appearance: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
 }
 
 .reading-section {
