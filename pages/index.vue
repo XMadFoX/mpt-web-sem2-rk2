@@ -18,6 +18,29 @@
         </ul>
       </li>
     </ul>
+    <section class="reading-section">
+      <h2>Список для чтения</h2>
+      <ul class="reading-list">
+        <li class="reading-card" v-for="card in readingList">
+          {{ card.title }}<span @if="card.category.length > 0"> в {{ card.category }}</span>
+        </li>
+      </ul>
+      <p @if="readingList.length === 0">Пусто</p>
+      <form @submit="e => addBook(e)" class="add-form">
+        <h3>Добавить книгу</h3>
+        <input type="text" placeholder="Название книги" v-model="newBook.title" required>
+        <div>
+          <select v-model="newBook.category">
+            <option disabled selected>Выберите категорию</option>
+            <option v-for="category in categories" :value="category.title">
+              {{ category.title }}
+            </option>
+          </select>
+          <input type="number" min="1" max="5" v-model="newBook.priority">
+          <button type="submit">Добавить</button>
+        </div>
+      </form>
+    </section>
   </div>
 </template>
 
@@ -74,6 +97,28 @@
   font-size: 0.75rem;
   color: #666;
 }
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  appearance: none;
+
+  &>*:nth-child(2) {
+    display: flex;
+    gap: 1rem;
+
+    &>* {
+      width: 50%;
+    }
+  }
+}
+
+.reading-section {
+  text-align: center;
+}
 </style>
 
 <script lang="ts">
@@ -104,7 +149,29 @@ export default Vue.extend({
             { title: 'PHP7 для начинающих с пошаговыми инструкциями', author: 'Майк МакГрат', description: 'Очень простой самоучитель для начинающих. Понятные по-шаговые инструкции, максимум примеров, пояснения на уровне «чайников» — все это позволит познакомиться с этим важнейшим для веб-программирования языком на практике и даже создать собственный сайт.', cover: 'https://techrocks.ru/wp-content/uploads/2018/11/33561224.cover_-529x768.jpg' }
           ]
         }
-      ]
+      ],
+      newBook: {
+        title: '',
+        category: null,
+        priority: 1,
+      },
+      readingList: [] as { title: string, category: string | null, priority: number | null }[]
+    }
+  },
+  methods: {
+    addBook(e: any) {
+      e.preventDefault();
+      this.readingList.push({
+        title: this.newBook.title,
+        category: this.newBook.category,
+        priority: this.newBook.priority,
+      })
+
+      // reset current
+      this.newBook.title = '';
+      this.newBook.category = null;
+      this.newBook.priority = 1;
+
     }
   }
 })
